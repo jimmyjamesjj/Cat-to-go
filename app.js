@@ -19,14 +19,27 @@ const app = express();
 require("./config")(app);
 
 // default value for title local
-const projectName = "cat-to-go";
+const projectName = "authentication-starter";
 const capitalized = (string) => string[0].toUpperCase() + string.slice(1).toLowerCase();
 
 app.locals.title = `${capitalized(projectName)}- Generated with IronGenerator`;
 
+// Set up connect-mongo
+//const session = require('express-session');
+//const MongoStore = require('connect-mongo')(session);
+//const mongoose = require('mongoose')
+
+// sessions
+
+
 // 👇 Start handling routes here
 const index = require("./routes/index");
 app.use("/", index);
+
+//link your auth routes here
+const authRoutes = require("./routes/account.js");
+app.use("/", authRoutes);
+
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
