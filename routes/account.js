@@ -1,7 +1,6 @@
 const router = require("express").Router();
-//const bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 const UserModel = require('../models/User.model')
-const catmodel = require('../models/catroom.model')
 
 /* GET signin page */
 router.get("/signin", (req, res, next) => {
@@ -19,7 +18,7 @@ router.get("/signup", (req, res, next) => {
 // when the user submits the data in the sign up form, it will come here
 router.post("/signup", (req, res, next) => {
     // we use req.body to grab data from the input form
-     const {name, email, password} = req.body
+     const {fname, sname, email, password} = req.body
     //console.log(req.body) // check if this is an empty object
     // if not use the length 
 
@@ -27,7 +26,7 @@ router.post("/signup", (req, res, next) => {
     //validate first
     // checking if the user has entered all three fields
     // we're missing one important step here
-    if (!name.length || !email.length || !password.length) {
+    if (!fname.length || !sname.length || !email.length || !password.length) {
         res.render('verify/signup', {msg: 'Please enter all fields'})
         return;
     }
@@ -40,12 +39,21 @@ router.post("/signup", (req, res, next) => {
         return;
      }
 
+     //validate password (special character, some numbers, min 6 length)
+     /*
+     let regexPass = /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[a-zA-Z!#$%&? "])[a-zA-Z0-9!#$%&?]{8,20}$/;
+     if (!regexPass.test(password)) {
+        res.render('account/signup', {msg: 'Password needs to have special chanracters, some numbers and be 6 characters aatleast'})
+        return;
+     }
+
+     */
+
      
-     
-     // creating a salt 
+     // creating a user,,,hash the password 
      let salt = bcrypt.genSaltSync(10);
      let hash = bcrypt.hashSync(password, salt);
-     UserModel.create({name, email, password: hash})
+     UserModel.create({fname, sname, email, password: hash})
         .then(() => {
             res.redirect('/')
         })
@@ -69,7 +77,8 @@ router.post("/signin", (req, res, next) => {
                     .then((isMatching) => {
                         if (isMatching) {
                             // when the user successfully signs up
-                            req.session.loggedInUser = result
+                            req.session.userData = result
+                            req.session.areyoutired = false
                             res.redirect('/profile')
                         }
                         else {
@@ -92,12 +101,24 @@ router.post("/signin", (req, res, next) => {
 
 // GET request to handle /profile
 
-router.get('/profile', (req, res) => {
-    let email = req.session.loggedInUser.email
-    res.render('profile.hbs', {email})
+//Middleware to protect routes
+const checkLoggedInUser = (req, res, next) => {
+     if (req.session.userData) {
+        next()
+     }
+     else {
+         res.redirect('/signin')
+     }
+     
+}
+
+router.get('/profile', checkLoggedInUser, (req, res, next) => {
+    let email = req.session.userData.email
+    res.render('profile.hbs', {email })
 })
 
 
+//router.get(path, callback,callback,callback,callback,callback)
 router.get('/logout', (req, res) => {
     req.session.destroy()
     res.redirect('/')
@@ -109,3 +130,16 @@ router.get('/logout', (req, res) => {
 
 
 module.exports = router;
+
+
+
+// {"cookie":
+//     {"originalMaxAge":86400000,
+//     "expires":"2021-02-10T14:57:09.403Z",
+//     "httpOnly":true,
+//     "path":"/"},
+//  "userData":{
+//       "_id":"602269a49bbe4d24c814eba3",
+//       "name":"manish",
+//       "email":"a@a.com",
+//       "password":"$2a$10$Ft8J7o5v7ntc1hMJN/DIfe94l7VXrugk9ZraQyB6RYpMDfKOXq6I6","__v":0}}

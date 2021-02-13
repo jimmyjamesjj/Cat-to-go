@@ -1,7 +1,7 @@
 document.addEventListener(
   "DOMContentLoaded",
   () => {
-    console.log("cat-to-go JS imported successfully!");
+    console.log("cat-to-go imported successfully!");
   },
   false
 );
