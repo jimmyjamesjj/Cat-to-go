@@ -4,11 +4,12 @@ const mongoose = require("mongoose")
 
 let catroomSchema = new mongoose.Schema({
 
-  catname: {type:String,
-    required: true
-    }, 
+room_type:String,
     number_of_cats: {type:String,
-      required: true
+      required: true,
+      catname: {type:String,
+        required: true
+        }
       }, 
      
     breed:String,
@@ -16,22 +17,28 @@ let catroomSchema = new mongoose.Schema({
       type:String,
       required:true
     },
-    number_of_nights:{String,
+    number_of_nights:{type:String,
     required:true
     },
    date:{
      type:String,
-     required:true
+     required:true,
+     start_date:String,
+     end_date:String
    },
    instruction:String,
     phonenumber: {
       type: String,
-      owneraddress: {
-        type: String,
-        required: true
-      },
       required: true
-    }
+    },
+    owneraddress: {
+      type: String,
+      required: true
+    },
+    user:[{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:'user'
+    }]
 })
 
 let catroommodel = mongoose.model('catroom', catroomSchema)

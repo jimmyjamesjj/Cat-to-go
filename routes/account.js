@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const bcrypt = require('bcryptjs');
 const UserModel = require('../models/User.model')
+const catroommodel= require('../models/catroom.model')
 
 /* GET signin page */
 router.get("/signin", (req, res, next) => {
@@ -8,25 +9,24 @@ router.get("/signin", (req, res, next) => {
     res.render('verify/signin.hbs')
     
 });
-
 /* GET signup page */
 router.get("/signup", (req, res, next) => {
     // Shows the sign up form to the user
     res.render('verify/signup.hbs')
 });
 
+router.get("/standardroom", (req, res, next)=>{
+    res.render('standardroom.hbs')
+})
+router.get("/vicroom",(req,res,next)=>{
+    res.render('vicroom.hbs')
+})
+
 // Handle POST requests to /signup
-// when the user submits the data in the sign up form, it will come here
 router.post("/signup", (req, res, next) => {
     // we use req.body to grab data from the input form
      const {fname, sname, email, password} = req.body
-    //console.log(req.body) // check if this is an empty object
-    // if not use the length 
-
-
-    //validate first
-    // checking if the user has entered all three fields
-    // we're missing one important step here
+    
     if (!fname.length || !sname.length || !email.length || !password.length) {
         res.render('verify/signup', {msg: 'Please enter all fields'})
         return;
@@ -49,8 +49,6 @@ router.post("/signup", (req, res, next) => {
      }
 
      */
-
-     
      // creating a user,,,hash the password 
      let salt = bcrypt.genSaltSync(10);
      let hash = bcrypt.hashSync(password, salt);
@@ -62,13 +60,35 @@ router.post("/signup", (req, res, next) => {
             next(err)
         })
 });
+// post rq for standardroom
+router.post("/views/standardroom",(req, res, next)=>{
+const {number_of_cats,catsize,number_of_nights, date, phonenumber, owneraddress}=req.body
+catroommodel.create({number_of_cats,catsize,number_of_nights, date, phonenumber, owneraddress})
+.then(() => {
+    res.redirect('/profile')
+})
+.catch((err) => {
+    next(err)
+})
+
+})
+// post requests for vicroom
+router.post("/views/vicroom",(req, res, next)=>{
+    const {room_type,number_of_cats,catsize,number_of_nights, date, phonenumber, owneraddress}=req.body
+    catroommodel.create({room_type,number_of_cats,catsize,number_of_nights, date, phonenumber, owneraddress})
+    .then(() => {
+        res.redirect('/profile')
+    })
+    .catch((err) => {
+        next(err)
+    })
+    
+    })
 
 // handle post requests when the user submits something in the sign in form
 router.post("/signin", (req, res, next) => {
     const {email, password} = req.body
 
-    // implement the same set of validations as you did in signup as well
-    // NOTE: We have used the Async method here. Its just to show how it works
     UserModel.findOne({email: email})
         .then((result) => {
             // if user exists
@@ -80,10 +100,8 @@ router.post("/signin", (req, res, next) => {
                             // when the user successfully signs up
                              req.session.userData = result
                              req.session.areyoutired = true
-                             res.redirect('/profile')
-                             
+                             res.redirect('/profile')   
                         }
-                        
                         else {
                             // when passwords don't match
                             res.render('verify/signin.hbs', {msg: 'Passwords dont match'})
@@ -103,9 +121,6 @@ router.post("/signin", (req, res, next) => {
 
 
 // cat room 
-
-
-
 //Middleware to protect routes
 const checkLoggedInUser = (req, res, next) => {
      if (req.session.userData) {
@@ -119,11 +134,52 @@ const checkLoggedInUser = (req, res, next) => {
 
 router.get('/profile', checkLoggedInUser, (req, res, next) => {
     let email = req.session.userData.email
-    res.render('profile.hbs', {email })
+    let fname = req.session.userData.fname
+    catroommodel.find()
+        .then((result) => {
+        res.render('profile.hbs', {result} )
+        })
+        .catch((err) => {
+            console.log(err)
+        });
 })
-router.get('/vicroom', checkLoggedInUser, (req, res, next) => {
+
+router.get('/views/:id/edit', (req, res, next) => {
     
-    res.render('vicroom.hbs')
+    // update booking
+    let id = req.params.id
+    catroommodel.findById(id)
+      .then((result) => {
+      res.render('update_form.hbs',{result})
+      
+    })
+    .catch((err) => {
+      console.log(err)
+    });
+  });
+  // editing form
+  router.post('/views/:id/edit', (req, res, next) => {
+    // Iteration #4: Update the drone
+    // ... your code here
+    let id = req.params.id
+    const {room_type,number_of_cats,catsize,number_of_nights, date, phonenumber, owneraddress}=req.body
+    const updatedroom = {room_type,number_of_cats,catsize,number_of_nights, date, phonenumber, owneraddress}
+    catroommodel.findByIdAndUpdate(id, updatedroom)
+    .then(() => {
+      res.redirect('/profile')
+    }).catch((err) => {
+      res.render('update_form.hbs')
+    });
+  });
+  
+
+router.get('/views/vicroom', checkLoggedInUser, (req, res, next) => {
+        res.render('vicroom')
+    
+})
+
+router.get('/views/standardroom', checkLoggedInUser,( req, res, next)=>{
+    res.render('standardroom')
 })
 
 //router.get

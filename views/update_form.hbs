@@ -1,0 +1,36 @@
+<form action="/views/ {{result._id}}/edit" method="POST">
+<div class="input-group">
+  <span class="input-group-text">Number of Cats</span>
+  <input value={{result.number_of_cats}} name="number_of_cats" type="text" aria-label="First name" class="form-control">
+</div> <p></p>
+
+  <div class="input-group">
+  <span class="input-group-text">Cat size</span>
+  <input value={{result.catsize}} name="catsize" type="text" aria-label="First name" class="form-control">
+</div><p></p>
+
+<div class="input-group">
+  <span class="input-group-text">Number of nights</span>
+  <input value={{result.number_of_nights}} name="number_of_nights" type="text" aria-label="First name" class="form-control">
+</div><p></p>
+
+<div class="input-group">
+  <span class="input-group-text">date</span>
+  <input value={{result.date}} name="date" type="text" aria-label="First name" class="form-control">
+</div><p></p>
+
+<div class="input-group">
+  <span class="input-group-text">Phone number </span>
+  <input value={{result.phonenumber}} name="phonenumber" type="text" aria-label="First name" class="form-control">
+</div><p></p>
+
+<div class="input-group">
+  <span class="input-group-text">Owner address</span>
+  <input value={{result.owneraddress}} name="owneraddress" type="text" aria-label="First name" class="form-control">
+</div>
+
+<input class="btn btn-primary" type="submit" value="Submit">
+</form>
+
+
+
