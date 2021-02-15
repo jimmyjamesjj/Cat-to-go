@@ -6,6 +6,7 @@ const UserModel = require('../models/User.model')
 router.get("/signin", (req, res, next) => {
     // Shows the sign in form to the user
     res.render('verify/signin.hbs')
+    
 });
 
 /* GET signup page */
@@ -77,10 +78,12 @@ router.post("/signin", (req, res, next) => {
                     .then((isMatching) => {
                         if (isMatching) {
                             // when the user successfully signs up
-                            req.session.userData = result
-                            req.session.areyoutired = false
-                            res.redirect('/profile')
+                             req.session.userData = result
+                             req.session.areyoutired = true
+                             res.redirect('/profile')
+                             
                         }
+                        
                         else {
                             // when passwords don't match
                             res.render('verify/signin.hbs', {msg: 'Passwords dont match'})
@@ -99,7 +102,9 @@ router.post("/signin", (req, res, next) => {
 });
 
 
-// GET request to handle /profile
+// cat room 
+
+
 
 //Middleware to protect routes
 const checkLoggedInUser = (req, res, next) => {
@@ -116,9 +121,12 @@ router.get('/profile', checkLoggedInUser, (req, res, next) => {
     let email = req.session.userData.email
     res.render('profile.hbs', {email })
 })
+router.get('/vicroom', checkLoggedInUser, (req, res, next) => {
+    
+    res.render('vicroom.hbs')
+})
 
-
-//router.get(path, callback,callback,callback,callback,callback)
+//router.get
 router.get('/logout', (req, res) => {
     req.session.destroy()
     res.redirect('/')
@@ -132,14 +140,3 @@ router.get('/logout', (req, res) => {
 module.exports = router;
 
 
-
-// {"cookie":
-//     {"originalMaxAge":86400000,
-//     "expires":"2021-02-10T14:57:09.403Z",
-//     "httpOnly":true,
-//     "path":"/"},
-//  "userData":{
-//       "_id":"602269a49bbe4d24c814eba3",
-//       "name":"manish",
-//       "email":"a@a.com",
-//       "password":"$2a$10$Ft8J7o5v7ntc1hMJN/DIfe94l7VXrugk9ZraQyB6RYpMDfKOXq6I6","__v":0}}
