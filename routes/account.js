@@ -2,6 +2,7 @@ const router = require("express").Router();
 const bcrypt = require('bcryptjs');
 const UserModel = require('../models/User.model')
 const catroommodel= require('../models/catroom.model')
+const adminModel = require('../models/admin.model')
 
 /* GET signin page */
 router.get("/signin", (req, res, next) => {
@@ -15,12 +16,83 @@ router.get("/signup", (req, res, next) => {
     res.render('verify/signup.hbs')
 });
 
+//Admin
+router.get("/adminsignin", (req, res, next) => {
+    // Shows the sign in form to the user
+    res.render('verify/adminsignin.hbs')
+    
+});
+/* GET signup page  for the admin*/
+router.get("/adminsignup", (req, res, next) => {
+    // Shows the sign up form to the user
+    res.render('verify/adminsignup.hbs')
+});
+
+//user
 router.get("/standardroom", (req, res, next)=>{
     res.render('standardroom.hbs')
 })
 router.get("/vicroom",(req,res,next)=>{
     res.render('vicroom.hbs')
 })
+//adminsiginup post requests
+router.post("/adminsignup", (req, res, next)=>{
+    const {adminname, adminemail, adminpassword}= req.body
+    if (!adminname.length || !adminemail.length || !adminpassword.length) {
+        res.render('verify/adminsignup', {msg: 'Please enter all fields'})
+        return;
+            }
+    let re = /\S+@\S+\.\S+/;
+     if (!re.test(adminemail)) {
+        res.render('verify/signup', {msg: 'Email not in valid format'})
+        return;
+     }
+
+     let salt = bcrypt.genSaltSync(10);
+     let hash = bcrypt.hashSync(adminpassword, salt);
+     adminModel.create({adminname, adminemail, adminpassword: hash})
+        .then(() => {
+            res.redirect('/')
+        })
+        .catch((err) => {
+            next(err)
+        }) 
+
+        
+})
+// Admin sigin requests
+router.post("/adminsignin", (req, res, next) => {
+    const {adminemail, adminpassword} = req.body
+
+    adminModel.findOne({adminemail: adminemail})
+        .then((result) => {
+            // if user exists
+            if (result) {
+                //check if the entered password matches with that in the DB
+                bcrypt.compare(adminpassword, result.adminpassword)
+                    .then((isMatching) => {
+                        if (isMatching) {
+                            // when the user successfully signs up
+                             req.session.userData = result
+                             req.session.areyoutired = true
+                             res.redirect('/userRequests')   
+                        }
+                        else {
+                            // when passwords don't match
+                            res.render('verify/adminsignin.hbs', {msg: 'Passwords dont match'})
+                        }
+                    })
+            }
+            else {
+                // when the user signs in with an email that does not exits
+                res.render('verify/adminsignin.hbs', {msg: 'Email does not exist'})
+            }
+        })
+        .catch((err) => {
+            next(err)
+        })
+   
+});
 
 // Handle POST requests to /signup
 router.post("/signup", (req, res, next) => {
@@ -131,18 +203,30 @@ const checkLoggedInUser = (req, res, next) => {
      }
      
 }
-
+//user login
 router.get('/profile', checkLoggedInUser, (req, res, next) => {
     let email = req.session.userData.email
     let fname = req.session.userData.fname
     catroommodel.find()
         .then((result) => {
-        res.render('profile.hbs', {result} )
+        res.render('profile.hbs', {fname,result} )
         })
         .catch((err) => {
             console.log(err)
         });
 })
+//ADMIN LOGIN
+router.get('/userRequests', checkLoggedInUser, (req, res, next) => {
+    let fname = req.session.userData.fname
+    adminModel.find()
+        .then((result) => {
+        res.render('userRequests.hbs', {fname,result} )
+        })
+        .catch((err) => {
+            console.log(err)
+        });
+})
+
 
 router.get('/views/:id/edit', (req, res, next) => {
     
@@ -163,12 +247,31 @@ router.get('/views/:id/edit', (req, res, next) => {
     // ... your code here
     let id = req.params.id
     const {room_type,number_of_cats,catsize,number_of_nights, date, phonenumber, owneraddress}=req.body
-    const updatedroom = {room_type,number_of_cats,catsize,number_of_nights, date, phonenumber, owneraddress}
+    console.log(req.body)
+    console.log(req.params)
+    let updatedroom = {room_type,number_of_cats,catsize,number_of_nights, date, phonenumber, owneraddress}
     catroommodel.findByIdAndUpdate(id, updatedroom)
-    .then(() => {
+    .then((result) => {
+        console.log(result, 'updated booking')
+      res.redirect('/profile')
+    })
+    .catch((err) => {
+    //   res.render('update_form.hbs')
+    console.log(err, 'error while updating room booking')
+    });
+  });
+// delete a booking
+router.post('/views/:id/delete', (req, res, next) => {
+    // Iteration #5: Delete the drone
+    // ... your code here
+  
+    let id = req.params.id
+    catroommodel.findByIdAndDelete(id)
+    .then((result) => {
+      console.log('deletion has succeded',result)
       res.redirect('/profile')
     }).catch((err) => {
-      res.render('update_form.hbs')
+      console.log('deletion has failed',err)
     });
   });
   

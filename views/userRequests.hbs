@@ -1,26 +1,8 @@
-{{!-- User will see this page once they signin --}}
- <div id="to-left">
-               <p><a href="/"> Home </a></p>
-            </div>
-<div>{{this.fname}} welcome to your profile page
-   
-   </div>
-
-   <div class="dropdown">
-  <button class="dropbtn">book cat room</button>
-  <div class="dropdown-content">
-    <a href="/views/standardroom">Standard Room</a>
-
-    <a href="/views/vicroom">VIC Room</a>
-  </div>
-</div>
-
-<div id="to-rightlogout" >
-                  <a href="/logout">Logout</a> <span> | </span>
-            </div>
-
-
-
+<a href="/"> Home </a>
+<p></p>
+<div class="userrequests">
+<h1 ><i>list of client requests</i></h1>
+{{this.fname}}
 
 {{#each result}}
         <div class="numberofcats">
@@ -41,13 +23,15 @@
          <div class="owneraddress">
             <h5>Owner address: {{this.owneraddress}}</h5>
             </div>
-<div><a href='/views/{{this._id}}/edit' class="btn btn-primary">Update booking</a></div>
+<div><a href='/views/{{this._id}}/edit' class="btn btn-primary">confirm client booking</a></div>
+
+
+
 <p></p>
          <form action="/views/{{this._id}}/delete" method="POST">
-                <button class="btn btn-primary">Cancel booking</button>
+                <button class="btn btn-primary">Cancel client booking</button>
 
    
 {{/each}}
 
-
-
+</div>

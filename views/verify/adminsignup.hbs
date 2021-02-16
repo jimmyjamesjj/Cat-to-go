@@ -1,0 +1,23 @@
+ <div id="to-left">
+               <p><a href="/"> Home </a></p>
+            </div>
+
+<form action="/adminsignup" method="POST">
+  <label> Name</label>
+  <input name="adminname" type="text"  placeholder="Enter your first name"  >
+
+{{!-- <label>Second Name</label>
+  <input name="sname" type="text"  placeholder="Enter your second name"  > --}}
+
+  <label>Email</label>
+  <input name="adminemail" type="email"  placeholder="Enter your email"  >
+
+  <label>Password</label>
+  <input name="adminpassword" type="password"  placeholder="Enter your Password"  >
+  <button type="submit" >Sign Up</button>
+</form>
+
+{{!-- Conditionally render the msg --}}
+{{#if msg}}
+ <div class="error">{{msg}}</div>
+{{/if}}
