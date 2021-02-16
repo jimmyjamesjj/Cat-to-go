@@ -1,8 +1,9 @@
 {{!-- User will see this page once they signin --}}
  <div id="to-left">
                <p><a href="/"> Home </a></p>
+               <p></p>
             </div>
-<div>{{this.email}} welcome to your profile page
+{{!-- <div>{{this.email}} welcome to your profile page --}}
    
    </div>
 
@@ -24,10 +25,10 @@
 
 {{#each result}}
         <div class="numberofcats">
-            <h5>number of cats: {{this.number_of_cats}}</h5>
+         number of cats: {{this.number_of_cats}}
             </div>
          <div class="catsize">
-            <h5>Cat size: {{this.catsize}}</h5>
+            Cat size: {{this.catsize}}
             </div>   
          <div class="numberofnights">
             <h5>Number of nights: {{this.number_of_nights}}</h5>
@@ -48,8 +49,8 @@
 
 <div><a href='/views/{{this._id}}/edit' class="btn btn-primary">Update booking</a></div>
 <p></p>
-         <form action="/views/{{this._id}}/delete" method="POST">
-                <button class="btn btn-primary">Cancel booking</button>
+         {{!-- <form action="/views/{{this._id}}/delete" method="POST">
+                <button class="btn btn-primary">Cancel booking</button> --}}
 
    
 {{/each}}

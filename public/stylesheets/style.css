@@ -1,7 +1,9 @@
-/*
+
 body {
+   /* display: flex; */
   padding: 50px;
   font: 14px 'Lucida Grande', Helvetica, Arial, sans-serif;
+  background-color: rgb(9, 60, 172);
 }
 
 a {
@@ -34,7 +36,7 @@ form button {
 }
 
 form button {
-  background: #43a3e6;
+  background: #38a2e9;
   border: 1px solid #43a3e6;
   border-radius: 4px;
   color: #fff;
@@ -50,7 +52,7 @@ form button {
 
 form button:hover {
   background: #fff;
-  color: #43a3e6;
+  color: #187e26;
   transition: 0.3s ease background;
 }
 
@@ -59,16 +61,14 @@ form button:hover {
   box-sizing: border-box;
   color: #fff;
   margin: 20px auto;
+  margin-top: 350px;
+  margin-right: 320px;
   padding: 20px;
-  width: 100%;
+  width: 70%;
+  height: 20%;
 }
 
-ul {
-  border-bottom: 2px solid #43a3e6;
-  height: 30px;
-  padding: 1em 0;
-  list-style-type: none;
-}
+
 
 ul li {
   line-height: 20px;
@@ -131,18 +131,18 @@ ul li {
   position: absolute;
   background-color: #f1f1f1;
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 6px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
 
 .dropdown-content a {
   color: black;
-  padding: 12px 16px;
+  padding: 4px 6px;
   text-decoration: none;
   display: block;
 }
 
-.dropdown-content a:hover {background-color: #ddd;}
+.dropdown-content a:hover {background-color: rgb(139, 181, 184);}
 
 .dropdown:hover .dropdown-content {display: block;}
 

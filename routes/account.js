@@ -276,7 +276,17 @@ router.get('/profile', checkLoggedInUser, (req, res, next) => {
 })
 
 //ADMIN LOGIN
-router.get('/userRequests', checkLoggedInUser, (req, res, next) => {
+const checkAdminLoggedInUser =(req, res, next) => {
+    //   let email = req.session.userData.email
+        if (req.session.userData) {
+           next()
+        }
+        else {
+            res.redirect('/adminsignin')
+        }
+        
+   }
+router.get('/userRequests', checkAdminLoggedInUser, (req, res, next) => {
 
     catroommodel.find()
         .then((result) =>{
@@ -293,7 +303,8 @@ router.post('/views/:id/edit', (req, res, next) => {
     let id = req.params.id
     const {room_type,number_of_cats,catsize,number_of_nights, date, phonenumber, owneraddress}=req.body
     
-    let admin_updatedroom = {room_type,number_of_cats,catsize,number_of_nights, date, phonenumber, owneraddress,status:'confirmed'}
+    let admin_updatedroom = {room_type,number_of_cats,catsize,number_of_nights, date, phonenumber,
+         owneraddress,status:'confirmed'}
     catroommodel.findByIdAndUpdate(id, admin_updatedroom)
     .then((result) => {
         console.log(result, 'updated booking')
@@ -310,10 +321,11 @@ router.post('/views/:id/delete', (req, res, next) => {
     let id = req.params.id
     const {room_type,number_of_cats,catsize,number_of_nights, date, phonenumber, owneraddress}=req.body
     
-    let admin_updatedroom = {room_type,number_of_cats,catsize,number_of_nights, date, phonenumber, owneraddress,status:'cancelled'}
+    let admin_updatedroom = {room_type,number_of_cats,catsize,number_of_nights, date, phonenumber, 
+        owneraddress,status:'cancelled'}
     catroommodel.findByIdAndDelete(id, admin_updatedroom)
     .then((result) => {
-      console.log('deletion has succeded',result)
+      
       res.redirect('/userRequests')
     }).catch((err) => {
       console.log('deletion has failed',err)
@@ -326,10 +338,9 @@ router.get('/views/:id/edit', (req, res, next) => {
     
     // update booking
     let id = req.params.id
-    console.log(id)
+    
     catroommodel.findById(id)
       .then((result) => {
-        console.log(result)
         res.render('update_form.hbs',{result})
       
     })
