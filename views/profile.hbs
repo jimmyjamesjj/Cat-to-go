@@ -2,7 +2,7 @@
  <div id="to-left">
                <p><a href="/"> Home </a></p>
             </div>
-<div>{{this.fname}} welcome to your profile page
+<div>{{this.email}} welcome to your profile page
    
    </div>
 
@@ -41,6 +41,11 @@
          <div class="owneraddress">
             <h5>Owner address: {{this.owneraddress}}</h5>
             </div>
+
+           <div class="status">
+            <h5>Status: {{this.status}}</h5>
+            </div>
+
 <div><a href='/views/{{this._id}}/edit' class="btn btn-primary">Update booking</a></div>
 <p></p>
          <form action="/views/{{this._id}}/delete" method="POST">

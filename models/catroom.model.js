@@ -17,8 +17,9 @@ room_type:String,
       type:String,
       required:true
     },
-    number_of_nights:{type:String,
-    required:true
+    number_of_nights:{
+      type:String,
+      required:true
     },
    date:{
      type:String,
@@ -35,10 +36,15 @@ room_type:String,
       type: String,
       required: true
     },
-    user:[{
+    status:{
+      type:String,
+      enum:['confirmed','pending','cancelled']
+    },
+    roomType: String,
+    user:{
       type:mongoose.Schema.Types.ObjectId,
       ref:'user'
-    }]
+    }
 })
 
 let catroommodel = mongoose.model('catroom', catroomSchema)
