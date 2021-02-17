@@ -1,17 +1,48 @@
 
-body {
-   /* display: flex; */
+body{
+   display: flexbox;
   padding: 50px;
   font: 14px 'Lucida Grande', Helvetica, Arial, sans-serif;
-  background-color: rgb(9, 60, 172);
+  background-color: wheat;
 }
 
+#status2{
+  color: rgb(250, 70, 70);
+ background-color: #000;
+}
+
+ #profile{
+   display: flexbox; 
+   justify-items: flex-start;
+  background-color: rgba(31, 87, 151, 0.644);
+  line-height: 20px;
+  /* background-image: url('/images/catbed.jpg'); */
+
+  color: #f1f1f1;
+}  
+
+.input-group-text{
+  /* color: rgb(211, 21, 21); */
+  /* background-color: #000; */
+  height: 38px;
+  
+}
+.vicrm{
+  background-image:url('/images/RECEPTION2.jpg');
+}
+/* .prof{
+  background-image: url('/images/catbed.jpg');
+  background-position: 500px;
+} */
 a {
   color: #00b7ff;
   text-decoration: none;
   font-size: 1.5em;
 }
+.stdfm{
+  background-image: url('/images/standard.jpg');
 
+}
 form {
   margin: 30px auto;
   width: 380px;
@@ -130,7 +161,7 @@ ul li {
   display: none;
   position: absolute;
   background-color: #f1f1f1;
-  min-width: 160px;
+  min-width: 100px;
   box-shadow: 0px 8px 6px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }

@@ -1,10 +1,11 @@
 <a href="/"> Home </a>
 <p></p>
-<div class="userrequests">
-<h1 ><i>list of client requests</i></h1>
-{{this.fname}}
+   <div class="userrequests">
+      <h1 ><i>list of client requests</i></h1>
+      {{this.fname}}
 
-{{#each result}}
+   <form action="/views/{{this._id}}/delete" method="POST">
+      {{#each result}}
         <div class="numberofcats">
             <h5>number of cats: {{this.number_of_cats}}</h5>
             </div>
@@ -23,14 +24,10 @@
          <div class="owneraddress">
             <h5>Owner address: {{this.owneraddress}}</h5>
             </div>
-<div><a href='/views/{{this._id}}/edit' class="btn btn-primary">confirm client booking</a></div>
-
-
-
-<p></p>
-         <form action="/views/{{this._id}}/delete" method="POST">
-                <button class="btn btn-primary">Cancel client booking</button>
-
+<div>
+   <a href='/views/{{this._id}}/edit' class="btn btn-primary">confirm client booking</a></div>
+   <a href='/views/{{this._id}}/delete' class="btn btn-primary">Cancel client booking</a></div>
+         </form>
    
 {{/each}}
 

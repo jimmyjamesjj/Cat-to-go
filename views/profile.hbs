@@ -1,59 +1,55 @@
-{{!-- User will see this page once they signin --}}
- <div id="to-left">
-               <p><a href="/"> Home </a></p>
-               <p></p>
-            </div>
-{{!-- <div>{{this.email}} welcome to your profile page --}}
-   
-   </div>
+ <div class="prof">
+            <nav><div id="to-left">
+                     <a href="/"> Home </a>
+                        </div>
+                        <div id="to-rightlogout" >
+                              <a href="/logout">Logout</a>
+                        </div>
+               <div class="dropdown">
+                  <button class="dropbtn">book cat room</button>
+                  <div class="dropdown-content">
+                  <a href="/views/standardroom">Standard Room</a>
 
-   <div class="dropdown">
-  <button class="dropbtn">book cat room</button>
-  <div class="dropdown-content">
-    <a href="/views/standardroom">Standard Room</a>
+                  <a href="/views/vicroom">VIC Room</a>
+                  </div>
+               </div>
+               </nav> 
 
-    <a href="/views/vicroom">VIC Room</a>
-  </div>
+            <body  id="profile">{{#each result}}
+
+                     <div class="room_type"> <b>Room type: </b> {{this.room_type}}
+                     </div>
+
+                  <div class="numberofcats">
+                     <b>number of cats:</b> {{this.number_of_cats}}
+                        </div>
+
+                     <div class="catsize">
+                        <b>Cat size:</b> {{this.catsize}}
+                        </div>   
+                     <div class="numberofnights">
+                        <b>Number of nights:</b> {{this.number_of_nights}}
+                        </div> 
+                     <div class="date">
+                        <b>Date:</b> {{this.date}}
+                        </div>
+                     <div class="phonenumber">
+                        <b>Owner Phone number:</b> {{this.phonenumber}}
+                        </div>
+                     <div class="owneraddress">
+                        <b>Owner address:</b> {{this.owneraddress}}
+                        </div>
+
+                     <div class="status">
+                        <b>Status:</b> <i id="status2">{{this.status}}</i>
+                        </div>
+            {{!-- <img src="/images/profilerm.jpg" alt="recption image" > --}}
+            <div><a href='/user/{{this._id}}/edit' class="btn btn-primary">Update booking</a></div>
+            {{/each}}
+
+
+
+            </body>
+
+
 </div>
-
-<div id="to-rightlogout" >
-                  <a href="/logout">Logout</a> <span> | </span>
-            </div>
-
-
-
-
-{{#each result}}
-        <div class="numberofcats">
-         number of cats: {{this.number_of_cats}}
-            </div>
-         <div class="catsize">
-            Cat size: {{this.catsize}}
-            </div>   
-         <div class="numberofnights">
-            <h5>Number of nights: {{this.number_of_nights}}</h5>
-            </div> 
-         <div class="date">
-            <h5>Date: {{this.date}}</h5>
-            </div>
-         <div class="phonenumber">
-            <h5>Owner Phone number: {{this.phonenumber}}</h5>
-            </div>
-         <div class="owneraddress">
-            <h5>Owner address: {{this.owneraddress}}</h5>
-            </div>
-
-           <div class="status">
-            <h5>Status: {{this.status}}</h5>
-            </div>
-
-<div><a href='/views/{{this._id}}/edit' class="btn btn-primary">Update booking</a></div>
-<p></p>
-         {{!-- <form action="/views/{{this._id}}/delete" method="POST">
-                <button class="btn btn-primary">Cancel booking</button> --}}
-
-   
-{{/each}}
-
-
-

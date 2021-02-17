@@ -10,6 +10,7 @@ router.get("/signin", (req, res, next) => {
     res.render('verify/signin.hbs')
     
 });
+
 /* GET signup page */
 router.get("/signup", (req, res, next) => {
     // Shows the sign up form to the user
@@ -19,9 +20,9 @@ router.get("/signup", (req, res, next) => {
 //Admin
 router.get("/adminsignin", (req, res, next) => {
     // Shows the sign in form to the user
-    res.render('verify/adminsignin.hbs')
-    
+    res.render('verify/adminsignin.hbs')   
 });
+
 /* GET signup page  for the admin*/
 router.get("/adminsignup", (req, res, next) => {
     // Shows the sign up form to the user
@@ -29,10 +30,15 @@ router.get("/adminsignup", (req, res, next) => {
 });
 
 //user
-router.get("/standardroom", (req, res, next)=>{
+router.get("/views/standardroom", (req, res, next)=>{
     res.render('standardroom.hbs')
 })
-router.get("/vicroom",(req,res,next)=>{
+//admin.hbs
+router.get("/admin", (req, res, next)=>{
+    res.render('admin.hbs')
+});
+
+router.get("/views/vicroom",(req,res,next)=>{
     res.render('vicroom.hbs')
 })
 //adminsiginup post requests
@@ -59,7 +65,7 @@ router.post("/adminsignup", (req, res, next)=>{
         }) 
 
         
-})
+});
 // Admin sigin requests
 router.post("/adminsignin", (req, res, next) => {
     const {adminemail, adminpassword} = req.body
@@ -143,7 +149,7 @@ router.post("/signup", (req, res, next) => {
 });
 // post rq for standardroom
 router.post("/views/standardroom",(req, res, next)=>{
-const {number_of_cats,catsize,number_of_nights, date, phonenumber, owneraddress}=req.body
+const {room_type,number_of_cats,catsize,number_of_nights, date, phonenumber, owneraddress}=req.body
 
     // To restrict people from creating multiple rooms
     // 1.First find if any rooms exist for that user
@@ -166,13 +172,13 @@ const {number_of_cats,catsize,number_of_nights, date, phonenumber, owneraddress}
             else {
                 // this part runs if no rooms exist for the user
                 catroommodel.create({
+                    room_type,
                     number_of_cats,
                     catsize,number_of_nights,
                     date,
                     phonenumber,
                     owneraddress,
                     status: 'pending',
-                    roomType: 'standard',
                     user: req.session.userData._id
                 })
                 .then(() => {
@@ -203,7 +209,6 @@ router.post("/views/vicroom",(req, res, next)=>{
          phonenumber, 
          owneraddress,
          status:'pending',
-         roomType: 'vic',
          user: req.session.userData._id
         })
             .then(() => {
@@ -285,7 +290,8 @@ const checkAdminLoggedInUser =(req, res, next) => {
             res.redirect('/adminsignin')
         }
         
-   }
+}
+
 router.get('/userRequests', checkAdminLoggedInUser, (req, res, next) => {
 
     catroommodel.find()
@@ -297,44 +303,69 @@ router.get('/userRequests', checkAdminLoggedInUser, (req, res, next) => {
             next(error)
         })
 });
-///////admin confirming/canceling the booking
-router.post('/views/:id/edit', (req, res, next) => {
-    
+
+
+  //get request for admin
+  router.get('/views/:id/edit', (req, res, next) => {
     let id = req.params.id
-    const {room_type,number_of_cats,catsize,number_of_nights, date, phonenumber, owneraddress}=req.body
-    
-    let admin_updatedroom = {room_type,number_of_cats,catsize,number_of_nights, date, phonenumber,
-         owneraddress,status:'confirmed'}
-    catroommodel.findByIdAndUpdate(id, admin_updatedroom)
-    .then((result) => {
-        console.log(result, 'updated booking')
+    catroommodel.findByIdAndUpdate(id, {status:'confirmed'})
+      .then(() => {
+        res.render('userRequests.hbs')
+      
+    })
+    .catch((err) => {
+      console.log(err)
+    });
+  });
+
+// delete a booking
+router.get('/views/:id/delete', (req, res, next) => {
+
+    let id = req.params.id
+   
+    catroommodel.findByIdAndDelete(id)
+    .then(() => {      
       res.redirect('/userRequests')
     })
     .catch((err) => {
-    //   res.render('update_form.hbs')
-    console.log(err, 'error while updating room booking')
+        next(err)
     });
   });
-// delete a booking
-router.post('/views/:id/delete', (req, res, next) => {
+// admin get request for deleting request
 
+router.get('/views/:id/delete', (req, res, next) => {
     let id = req.params.id
-    const {room_type,number_of_cats,catsize,number_of_nights, date, phonenumber, owneraddress}=req.body
     
-    let admin_updatedroom = {room_type,number_of_cats,catsize,number_of_nights, date, phonenumber, 
-        owneraddress,status:'cancelled'}
-    catroommodel.findByIdAndDelete(id, admin_updatedroom)
-    .then((result) => {
-      
-      res.redirect('/userRequests')
-    }).catch((err) => {
-      console.log('deletion has failed',err)
+    catroommodel.findById(id)
+      .then((result) => {
+        res.render('userRequests',{result})
+    })
+    .catch((err) => {
+      console.log(err)
     });
   });
   ///end admin
 
 
-router.get('/views/:id/edit', (req, res, next) => {
+
+  // editing form
+  router.post('/user/:id/edit', (req, res, next) => {
+    
+    let id = req.params.id
+    const {room_type,number_of_cats,catsize,number_of_nights, date, phonenumber, owneraddress}=req.body
+    
+    let updatedroom = {room_type,number_of_cats,catsize,number_of_nights, date, phonenumber, owneraddress}
+        catroommodel.findByIdAndUpdate(id, updatedroom)
+            .then(() => {
+            res.redirect('/profile')
+            })
+            .catch((err) => {
+            //   res.render('update_form.hbs')
+            console.log(err, 'error while updating room booking')
+            });
+  });
+
+  router.get('/user/:id/edit', (req, res, next) => {
     
     // update booking
     let id = req.params.id
@@ -348,30 +379,13 @@ router.get('/views/:id/edit', (req, res, next) => {
       console.log(err)
     });
   });
-  // editing form
-  router.post('/views/:id/edit', (req, res, next) => {
-    
-    let id = req.params.id
-    const {room_type,number_of_cats,catsize,number_of_nights, date, phonenumber, owneraddress}=req.body
-    
-    let updatedroom = {room_type,number_of_cats,catsize,number_of_nights, date, phonenumber, owneraddress}
-    catroommodel.findByIdAndUpdate(id, updatedroom)
-    .then((result) => {
-        console.log(result, 'updated booking')
-      res.redirect('/profile')
-    })
-    .catch((err) => {
-    //   res.render('update_form.hbs')
-    console.log(err, 'error while updating room booking')
-    });
-  });
-// delete a booking
-router.post('/views/:id/delete', (req, res, next) => {
+
+// user delete a booking
+router.post('/user/:id/delete', (req, res, next) => {
 
     let id = req.params.id
     catroommodel.findByIdAndDelete(id)
     .then((result) => {
-      console.log('deletion has succeded',result)
       res.redirect('/profile')
     }).catch((err) => {
       console.log('deletion has failed',err)
@@ -379,12 +393,12 @@ router.post('/views/:id/delete', (req, res, next) => {
   });
   
 
-router.get('/views/vicroom', checkLoggedInUser, (req, res, next) => {
+router.get('/user/vicroom', checkLoggedInUser, (req, res, next) => {
         res.render('vicroom')
     
 })
 
-router.get('/views/standardroom', checkLoggedInUser,( req, res, next)=>{
+router.get('/user/standardroom', checkLoggedInUser,( req, res, next)=>{
     res.render('standardroom')
 })
 
