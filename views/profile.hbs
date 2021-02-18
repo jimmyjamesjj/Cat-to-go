@@ -1,5 +1,4 @@
- <div class="prof">
-            <nav><div id="to-left">
+ <nav><div id="to-left">
                      <a href="/"> Home </a>
                         </div>
                         <div id="to-rightlogout" >
@@ -14,9 +13,15 @@
                   </div>
                </div>
                </nav> 
+ 
+ {{!-- <div class="prof"> --}}
+            
 
-            <body  id="profile">{{#each result}}
-
+<div class="profile"  id="profile">
+               
+               {{#each result}}
+               
+                     <div class="room">
                      <div class="room_type"> <b>Room type: </b> {{this.room_type}}
                      </div>
 
@@ -43,13 +48,19 @@
                      <div class="status">
                         <b>Status:</b> <i id="status2">{{this.status}}</i>
                         </div>
+                        
+
             {{!-- <img src="/images/profilerm.jpg" alt="recption image" > --}}
             <div><a href='/user/{{this._id}}/edit' class="btn btn-primary">Update booking</a></div>
+            
+            </div>
+
+
             {{/each}}
-
-
-
-            </body>
+            
 
 
 </div>
+
+
+{{!-- </div> --}}

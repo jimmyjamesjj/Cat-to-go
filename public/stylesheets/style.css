@@ -1,6 +1,7 @@
 
 body{
-   display: flexbox;
+
+   margin: 0;
   padding: 50px;
   font: 14px 'Lucida Grande', Helvetica, Arial, sans-serif;
   background-color: wheat;
@@ -11,9 +12,10 @@ body{
  background-color: #000;
 }
 
- #profile{
-   display: flexbox; 
-   justify-items: flex-start;
+ .profile{
+   display: flex; 
+   justify-content: center;
+
   background-color: rgba(31, 87, 151, 0.644);
   line-height: 20px;
   /* background-image: url('/images/catbed.jpg'); */
@@ -27,8 +29,22 @@ body{
   height: 38px;
   
 }
+.hm{
+  animation: move 3s infinite;
+  
+  color: rgba(19, 87, 235, 0.925);
+}
+@keyframes move {
+  from { margin-left: 0px; }
+  to { margin-left: 250px; }
+}
 .vicrm{
   background-image:url('/images/RECEPTION2.jpg');
+}
+
+.hm2{
+  text-align: center;
+  color: rgba(19, 87, 235, 0.925);
 }
 /* .prof{
   background-image: url('/images/catbed.jpg');

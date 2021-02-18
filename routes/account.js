@@ -200,19 +200,34 @@ const {room_type,number_of_cats,catsize,number_of_nights, date, phonenumber, own
 // post requests for vicroom
 router.post("/views/vicroom",(req, res, next)=>{
     const {room_type,number_of_cats,catsize,number_of_nights, date, phonenumber, owneraddress}=req.body
-    catroommodel.create({
-        room_type,
-        number_of_cats,
-        catsize,
-        number_of_nights,
-         date, 
-         phonenumber, 
-         owneraddress,
-         status:'pending',
-         user: req.session.userData._id
-        })
-            .then(() => {
-                res.redirect('/profile')
+    let userId = req.session.userData._id
+    catroommodel.find({user: userId})
+    .then((results) => {
+                if (results.length) {
+                    //change this later
+                    res.redirect('/profile')
+                }
+                else {
+                    // this part runs if no rooms exist for the user
+                    catroommodel.create({
+                        room_type,
+                        number_of_cats,
+                        catsize,number_of_nights,
+                        date,
+                        phonenumber,
+                        owneraddress,
+                        status: 'pending',
+                        user: req.session.userData._id
+                    })
+                    .then(() => {
+                        res.redirect('/profile')
+                    })
+                    .catch((err) => {
+                        next(err)
+                    })
+                }
+
+                // res.redirect('/profile')
             })
             .catch((err) => {
                 next(err)
@@ -234,7 +249,6 @@ router.post("/signin", (req, res, next) => {
                         if (isMatching) {
                             // when the user successfully signs up
                              req.session.userData = result
-                             req.session.areyoutired = true
                              res.redirect('/profile')   
                         }
                         else {
@@ -256,7 +270,6 @@ router.post("/signin", (req, res, next) => {
 
 
 // cat room 
-//Middleware to protect routes
 const checkLoggedInUser = (req, res, next) => {
  //   let email = req.session.userData.email
      if (req.session.userData) {
@@ -269,11 +282,10 @@ const checkLoggedInUser = (req, res, next) => {
 }
 //user login
 router.get('/profile', checkLoggedInUser, (req, res, next) => {
-    let email = req.session.userData.email
-    let fname = req.session.userData.fname
-    catroommodel.find()
+    let userId=req.session.userData._id
+    catroommodel.find({user:userId})
         .then((result) => {
-        res.render('profile.hbs', {fname,result} )
+        res.render('profile.hbs', {result} )
         })
         .catch((err) => {
             console.log(err)
@@ -333,17 +345,17 @@ router.get('/views/:id/delete', (req, res, next) => {
   });
 // admin get request for deleting request
 
-router.get('/views/:id/delete', (req, res, next) => {
-    let id = req.params.id
+// router.get('/views/:id/delete', (req, res, next) => {
+//     let id = req.params.id
     
-    catroommodel.findById(id)
-      .then((result) => {
-        res.render('userRequests',{result})
-    })
-    .catch((err) => {
-      console.log(err)
-    });
-  });
+//     catroommodel.findById(id)
+//       .then((result) => {
+//         res.render('userRequests',{result})
+//     })
+//     .catch((err) => {
+//       console.log(err)
+//     });
+//   });
   ///end admin
 
 
