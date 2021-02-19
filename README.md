@@ -92,6 +92,6 @@ Repository Link
 https://github.com/jimmyjamesjj/Cat-to-go
 Deploy Link
 https://cat-to-go.herokuapp.com/userRequests
-Slides
-https://docs.google.com/presentation/d/1eLQPlgJMKZrTcmTXM_iycAXRIGYYtJ91FSZcLpm-vQk/edit#slide=id.gbdeea581e9_2_106
-Slides Link
+
+Slides Link:  https://docs.google.com/presentation/d/1eLQPlgJMKZrTcmTXM_iycAXRIGYYtJ91FSZcLpm-vQk/edit#slide=id.gbdeea581e9_2_106
+
