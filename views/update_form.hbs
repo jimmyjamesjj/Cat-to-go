@@ -1,4 +1,10 @@
 <form action="/user/{{result._id}}/edit" method="POST">
+
+<div class="input-group">
+  <span class="input-group-text">Room type</span>
+  <input value={{result.room_type}} name="room_type" type="text" aria-label="First name" class="form-control">
+</div> <p></p>
+
 <div class="input-group">
   <span class="input-group-text">Number of Cats</span>
   <input value={{result.number_of_cats}} name="number_of_cats" type="text" aria-label="First name" class="form-control">

@@ -1,43 +1,40 @@
 
 body{
-
-   margin: 0;
+  margin: 0;
   padding: 50px;
   font: 14px 'Lucida Grande', Helvetica, Arial, sans-serif;
+
   background-color: wheat;
+  /* position:absolute; */
 }
 
 #status2{
   color: rgb(250, 70, 70);
- background-color: #000;
+  background-color: #000;
 }
 
- .profile{
-   display: flex; 
-   justify-content: center;
-
-  background-color: rgba(31, 87, 151, 0.644);
-  line-height: 20px;
-  /* background-image: url('/images/catbed.jpg'); */
-
-  color: #f1f1f1;
-}  
+.admpg {
+  display: flex;
+  justify-content:space-between;
+  background-color: rgb(27, 75, 206);
+}
 
 .input-group-text{
   /* color: rgb(211, 21, 21); */
   /* background-color: #000; */
   height: 38px;
-  
 }
+
 .hm{
   animation: move 3s infinite;
-  
   color: rgba(19, 87, 235, 0.925);
 }
+
 @keyframes move {
   from { margin-left: 0px; }
   to { margin-left: 250px; }
 }
+
 .vicrm{
   background-image:url('/images/RECEPTION2.jpg');
 }
@@ -45,20 +42,24 @@ body{
 .hm2{
   text-align: center;
   color: rgba(19, 87, 235, 0.925);
+  text-size-adjust: 600px;
 }
+
 /* .prof{
   background-image: url('/images/catbed.jpg');
   background-position: 500px;
 } */
+
 a {
   color: #00b7ff;
   text-decoration: none;
   font-size: 1.5em;
 }
+
 .stdfm{
   background-image: url('/images/standard.jpg');
-
 }
+
 form {
   margin: 30px auto;
   width: 380px;
@@ -115,8 +116,6 @@ form button:hover {
   height: 20%;
 }
 
-
-
 ul li {
   line-height: 20px;
 }
@@ -136,27 +135,89 @@ ul li {
   justify-content: center;
 }
 
-#to-left {
-  float: left;
+/*-----profile-----*/
+/* .profile-body {
+  background-image: url("/images/catbed.jpg");
+  width: 100%;
+  height: auto;
+} */
+
+.profile-nav {
+  padding-left: 0;
+  display: flex;
+  justify-content: flex-start;
 }
 
-#to-left p a {
-  color: #000;
+.profile-nav li {
+  list-style: none;
+  margin-right: 20px;
+}
+
+#to-left,
+#to-rightlogout {
+  line-height: 50px;
+}
+
+.dropdown-content a {
+  white-space: nowrap;
+}
+
+.profile {
+  background-color: rgba(31, 87, 151, 0.644);
+  width: 30%;
+  margin: 0 auto;
+  padding: 20px;
+  font-size: 20px;
+  white-space: nowrap;
+  
+}
+
+.room-topics {
   font-weight: bold;
-  font-size: 2em;
 }
 
-*/
+#status2 {
+  font-style: italic;
+}
 
-.userrequests{
+.room-btn {
+  margin: 20px 0 0 26%;
+}
+
+/* -----userRequests-----*/
+.top-userrequests h1 {
+  text-align: center;
+  font-style: italic;
+}
+
+.userrequests {
+  margin-top: 20px;
+  display:flex;
+  justify-content: space-between;
+}
+
+.inner-userrequests {
+  width: 48%;
   background-color: bisque;
+  padding: 18px 30px;
+}
+
+.inner-userrequests form {
+  width: 190px;
+  margin: 0;
+}
+
+.userrequests-btn a {  
+  margin: 4px 0 10px;
+}
+
+.room_type h5,
+.owneraddress h5 {
+  white-space: nowrap;
 }
 
 #to-rightlogout {
-  padding: 1em;
-  float: right;
-  width: 900px;
-  height: 800px;
+  
 }
 
 

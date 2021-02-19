@@ -4,7 +4,7 @@ const mongoose = require("mongoose")
 
 let catroomSchema = new mongoose.Schema({
 
-room_type:String,
+      room_type:String,
     number_of_cats: {type:String,
       required: true,
       catname: {type:String,
@@ -14,8 +14,7 @@ room_type:String,
      
     breed:String,
     catsize:{
-      type:String,
-      required:true
+      type:String
     },
     number_of_nights:{
       type:String,
